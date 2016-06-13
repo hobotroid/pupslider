@@ -1,31 +1,40 @@
 import React from "react";
 
+import Board from "./../board/Board";
 import BoardLayout from "./BoardLayout";
+import GoogleImage from "./../images/GoogleImage.js";
 
 export default class App extends React.Component {
     constructor() {
         super();
 
         this.state = {
-            width: 5,
-            height: 5,
-            tileWidth: 100,
-            tileHeight: 100
+            board: new Board(5, 5, 100, 100) // TODO: un-hardcode these widths and heights
         };
+
+        this.handleMouseClick = this.tileClicked.bind(this);
+
+        //get images - temp
+        let googleImage = new GoogleImage();
+        googleImage.get("puppy", 5);
     }
 
     tileClicked(tileIndex) {
-        console.log("clicked {tileIndex}");
+        console.log(`clicked ${tileIndex}`);
+        console.log(this.state.board.tiles);
+        this.state.board.move(tileIndex);
+        this.setState({
+            board: this.state.board
+        });
+        console.log(this.state.board.tiles);
     }
 
     render() {
         return (
             <div>
                 <BoardLayout
-                    width={this.state.width}
-                    height={this.state.height}
-                    tileWidth={this.state.tileWidth}
-                    tileHeight={this.state.tileHeight} />
+                    board={this.state.board}
+                    onMouseClick={this.handleMouseClick} />
             </div>
         );
     }
