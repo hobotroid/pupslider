@@ -2,6 +2,8 @@ var GoogleImage = require(__dirname + "/src/js/images/GoogleImage.js");
 
 var bodyParser = require('body-parser');
 var express = require('express');
+var fs = require('fs');
+
 var app = express();
 
 app.set('port', (process.env.PORT || 5000));
@@ -46,7 +48,6 @@ router.route('/pups')
 
         //If our google search times out for whatever reason, use a static list
         res.setTimeout(5000, function(){
-            var fs = require('fs');
             var shuffle = require('shuffle-array');
             var cachedPuppiesJson = JSON.parse(fs.readFileSync('staticpups.json', 'utf8'));
             var cachedUrls = shuffle(cachedPuppiesJson.urls);
@@ -57,7 +58,7 @@ router.route('/pups')
             res.end();
         });
 
-
+/* UNCOMMENT ME
         let searchPromise = GoogleImage.get("cute puppy");
         searchPromise.then(function (images) {
             console.log("Using Google results!");
@@ -65,11 +66,65 @@ router.route('/pups')
                 return image.url;
             });
             res.json({ message: urls });
-        });
+        });*/
     });
 /*    .post(function(req, res) {
         res.json({ message: 'pups POST' });
     });*/
+
+/**
+ * Scores GET and POST
+ * For now, scores are stored in a simple JSON file. They're presented in
+ * two lists - one sorted by time and one sorted by # of moves
+ */
+function getScoresFromFile() {
+    try {
+        var scoresJson = JSON.parse(fs.readFileSync('scores.json', 'utf8'));
+    } catch(e) {
+        var scoresJson = {byTime: [], byMoves: []};
+    }
+
+    return scoresJson;
+}
+router.route('/scores')
+    .get(function(req, res) {
+        res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+        res.header('Expires', '-1');
+        res.header('Pragma', 'no-cache');
+
+        res.json(getScoresFromFile());
+    })
+
+    .post(function(req, res) {
+        var name = req.body.name;
+        var time = req.body.time;
+        var moves = req.body.moves;
+
+        var scoresJson = getScoresFromFile();
+
+        // Add new entry to score lists and then sort them and trim
+        scoresJson.byTime.push({ name: name, time: time});
+        scoresJson.byMoves.push({ name: name, moves: moves });
+        scoresJson.byTime = scoresJson.byTime.sort(function(a, b){
+            if(parseInt(a.time) < parseInt(b.time)) return -1;
+            if(parseInt(a.time) > parseInt(b.time)) return 1;
+            return 0;
+        }).slice(0, 20);
+        scoresJson.byMoves = scoresJson.byMoves.sort(function(a, b){
+            if(parseInt(a.moves) < parseInt(b.moves)) return -1;
+            if(parseInt(a.moves) > parseInt(b.moves)) return 1;
+            return 0;
+        }).slice(0, 20);
+
+        fs.writeFile("scores.json", JSON.stringify(scoresJson), function(err) {
+            if(err) {
+                return console.log(err);
+            }
+
+            res.json(getScoresFromFile());
+        });
+    })
+
 
 /**
  * /api/pupit GET

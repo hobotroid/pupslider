@@ -27,7 +27,7 @@ class BoardLayout extends React.Component {
             {board.tiles.map((tileValue, tileIndex) => {
                 let { x, y } = board.getTilePosition(tileIndex);
                 let originalPos = board.getTilePosition(tileValue);
-                const className = tileValue == 0 ? "emptyTile" : "normalTile";
+                const className = "tile " + (tileValue == 0 ? "emptyTile" : "normalTile");
                 const style = {
                     //scale: spring(1, springConfig),
                     //shadow: spring(1, springConfig),
@@ -37,22 +37,18 @@ class BoardLayout extends React.Component {
                 };
                 return (
                     <Motion key={tileIndex} defaultStyle={{x: 0}} style={style}>
-                        { (value) =>
+                        {(value) =>
                             <div
                                 className={className}
                                 style={{
-                                    color: `red`,
                                     width: `${board.tileWidth}px`,
                                     height: `${board.tileHeight}px`,
-                                    position: `absolute`,
-                                    textAlign: `center`,
                                     transform: `translate3d(${x}px, ${y}px, 0) scale(1)`,
                                     WebkitTransform: `translate3d(${x}px, ${y}px, 0) scale(1)`,
                                     background: `url(${this.props.puppyUrl}) no-repeat top left`,
                                     backgroundPosition: `-${originalPos.x}px -${originalPos.y}px`
                                 }}
                                 onClick={this.props.onMouseClick.bind(null, tileIndex)}>
-                                {tileValue}
                             </div>
                         }
                     </Motion>

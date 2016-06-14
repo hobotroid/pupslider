@@ -16,10 +16,15 @@ export default class GameLayout extends React.Component {
         this.gameTimer = setInterval(this.tick.bind(this), 1000);
         this.handleMouseClick = this.tileClicked.bind(this);
 
+        // API lives in same process as web server for the purposes of this demo
+        this.apiUrl = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '')+"/api";
+
         this.state = {
             board: new Board(w, h, gameWidth / w, gameHeight / h),
             moveCount: 0,
-            gameTime: 0
+            gameTime: 0,
+            togglingScores: false,
+            won: false
         };
     }
 
@@ -40,17 +45,12 @@ export default class GameLayout extends React.Component {
     }
 
     tileClicked(tileIndex) {
-        console.log(`clicked ${tileIndex}`);
-        console.log(this.state.board.tiles);
         if(this.state.board.move(tileIndex)) {
             this.setState({
                 board: this.state.board,
-                moveCount: this.state.moveCount + 1
+                moveCount: this.state.moveCount + 1,
+                won: true || this.state.board.isSolved()
             });
-            if(this.state.board.isSolved()) {
-                alert("con g's");
-            }
-            console.log(this.state.board.tiles);
         }
     }
 
@@ -58,30 +58,99 @@ export default class GameLayout extends React.Component {
 
     }
 
-    solve() {
+    /**
+     * Show/hide the high scores panel. This should be borken out into
+     * its own react component, but it's okay here for now.
+     */
+    toggleScores() {
+        $(".scoresButton").blur();
+
+        if(!this.state.togglingScores) {
+            this.state.togglingScores = true;
+            if($("#scoreBoard").is(":visible")) {
+                $("#scoreBoard").animate({
+                    opacity: 0
+                }, 500, () => {
+                    $("#scoreBoard").hide();
+                    this.state.togglingScores = false;
+                });
+            } else {
+                $.get(this.apiUrl + "/scores", (results) => {
+                    //scores by time
+                    var listElement = $('<ul class="list">');
+                    $("#scoreBoard").html('');
+                    listElement.append('<li style="font-size:22px;text-decoration:underline">Time</li>')
+                    results.byTime.map((row) => {
+                        const {minutes, seconds} = this.formatTime(row.time);
+                        listElement.append(`<li><span class="name">${row.name}</span> <span class="value">${minutes}:${seconds}</span></li>`);
+                    })
+                    listElement.appendTo("#scoreBoard");
+
+                    //scores by moves
+                    var listElement = $('<ul class="list">').css({float: 'right'});
+                    listElement.append('<li style="font-size:22px;text-decoration:underline">Moves</li>')
+                    results.byMoves.map((row) => {
+                        listElement.append(`<li><span class="name">${row.name}</span> <span class="value">${row.moves}</span></li>`);
+                    })
+                    listElement.appendTo("#scoreBoard");
+
+                    $("#scoreBoard").show().animate({
+                        opacity: 1
+                    }, 500, () => {
+                        this.state.togglingScores = false;
+                    });
+                })
+
+            }
+        }
+    }
+
+    hideScores() {
 
     }
 
-    showScores() {
-
+    formatTime(seconds) {
+        let minutes = this.pad(Math.floor(seconds / 60), 2);
+        return {
+            minutes: minutes,
+            seconds: this.pad(seconds - parseInt(minutes) * 60, 2)
+        };
     }
 
     render() {
-        const moveCount = this.pad(this.state.moveCount, 3);
-        const minutes = this.pad(Math.floor(this.state.gameTime / 60), 2);
-        const seconds = this.pad(this.state.gameTime - parseInt(minutes) * 60, 2);
+        const moveCount = this.state.moveCount;
+        const { minutes, seconds } = this.formatTime(this.state.gameTime);
 
+        if(this.state.won) {
+            clearInterval(this.gameTimer);
+            let name = prompt("Congrats! What's your name?");
+            if(name) {
+                $.post(this.apiUrl + "/scores",
+                    {name: name, time: this.state.gameTime, moves: this.state.moveCount},
+                    () => {
+                        this.toggleScores();
+                    }
+                )
+            } else {
+                this.toggleScores();
+            }
+        }
 
         return (
             <div id="gameScreen">
-                <img id="titleImage" src="title.png" onClick={this.props.endGame} />
+                <img id="titleImage" src="title2.png" onClick={this.props.endGame} />
                 <BoardLayout
                     board={this.state.board}
                     onMouseClick={this.handleMouseClick}
                     puppyUrl={this.props.puppyUrl} />
 
+                <ul id="scoreBoard">
+                    <li>blah</li>
+                </ul>
+
                 <div class="clearfix buttons gameInfo">
                     <div style={{float:'left'}}>PUPSLIDES: <span class="gameMoves">{moveCount}</span></div>
+                    <button class="btn btn-default scoresButton" style={{float:'right', marginLeft: '10px'}} onClick={this.toggleScores.bind(this)}>Scores</button>
                     <div style={{float:'right'}}><span class="gameTimer">{minutes}:{seconds}</span></div>
                 </div>
             </div>
