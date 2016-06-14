@@ -40,7 +40,7 @@ class TitleLayout extends React.Component {
     nextPuppy() {
         console.log("nextpuppy");
         $("#currentPuppyImage").hide();
-        $("#buttons").hide();
+        $(".buttons").hide();
         if(this.state.puppyIndex >= this.state.puppyImageUrls.length - 1) {
             this.getPuppyPage();
         } else {
@@ -60,7 +60,7 @@ class TitleLayout extends React.Component {
 
     onImageLoad(e) {
         $(e.target).show();
-        $("#buttons").show();
+        $(".buttons").show();
     }
 
     onStartGame() {
@@ -69,7 +69,7 @@ class TitleLayout extends React.Component {
 
     render() {
         return (
-            <div id="gameScreen">
+            <div id="gameScreen" class="titleScreen">
                 <img id="titleImage" src="title.png" />
                 <div id="currentPuppy">
                     <img id="currentPuppyImage"
@@ -78,9 +78,9 @@ class TitleLayout extends React.Component {
                         onLoad={this.onImageLoad.bind(this)}
                         src={this.state.puppyUrl} />
                 </div>
-                <div id="buttons">
-                    <button onClick={this.nextPuppy.bind(this)}>Not Cute Enough</button>
-                    <button onClick={this.onStartGame.bind(this)}>Play!</button>
+                <div class="clearfix buttons">
+                    <span class="gameButton left" onClick={this.nextPuppy.bind(this)}>Not Cute Enough</span>
+                    <span class="gameButton right" style={{color:'greenyellow'}} onClick={this.onStartGame.bind(this)}>Play!</span>
                 </div>
             </div>);
     }

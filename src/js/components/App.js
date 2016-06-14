@@ -23,9 +23,11 @@ export default class App extends React.Component {
     }
 
     endGame() {
-        this.setState({
-            stage: "title"
-        });
+        if(confirm("Are you sure you want to end your current game?")) {
+            this.setState({
+                stage: "title"
+            });
+        }
     }
 
     render() {
@@ -34,7 +36,7 @@ export default class App extends React.Component {
                 startGame={this.startGame.bind(this)} />;
         } else if (this.state.stage == "game") {    // Game screen
             return <GameLayout
-                endGame={this.endGame}
+                endGame={this.endGame.bind(this)}
                 puppyUrl={this.state.puppyUrl} />;
         } else {                                    // Game Over screen
             return <GameLayout />;

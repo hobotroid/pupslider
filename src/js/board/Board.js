@@ -34,7 +34,7 @@ export default class Board {
             return false;
         }
         for (let i = 0; i < this.tiles.length - 1; i++) {
-            if (this.tiles[index] !== i + 1) {
+            if (this.tiles[i] !== i + 1) {
                 return false;
             }
         }
@@ -43,6 +43,7 @@ export default class Board {
 
     /**
      * Swaps a given tile with the adjacent empty tile, if it exists.
+     * return bool whether move happened
      */
     move(tileIndex) {
         const clickedTile = this.getTilePosition(tileIndex);
@@ -54,9 +55,9 @@ export default class Board {
             const tempTile = this.tiles[emptyTile.index];
             this.tiles[emptyTile.index] = this.tiles[tileIndex];
             this.tiles[tileIndex] = tempTile;
-            console.log("clicked tile is adjacent to empty tile!");
-        } else {
-            console.log("can't move this one");
+            return true;
         }
+
+        return false;
     }
 }
