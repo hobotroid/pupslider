@@ -16,6 +16,10 @@ body {
     color: white;
     font-size: 30px;
     cursor: pointer;
+    background-color: #EEBC44;
+    border-top: 8px solid #5F4B1B;
+    border-left: 8px solid #5F4B1B;
+    padding: 0 8px;
 }
 .gameButton.left {
     float: left;
@@ -46,15 +50,18 @@ body {
 #gameScreen .buttons {
     margin: 0 auto;
     width: 521px;
-    background-color: #EEBC44;
-    border-top: 8px solid #5F4B1B;
-    border-left: 8px solid #5F4B1B;
-    padding: 5px;
 }
 #gameScreen.titleScreen .buttons {
     display: none;
 }
 #gameScreen .gameInfo {
+
+    background-color: #EEBC44;
+    border-top: 8px solid #5F4B1B;
+    border-left: 8px solid #5F4B1B;
+    padding: 5px;
+
+
     font-family: folioBold;
     text-shadow: 2px 2px #5F4B1B;
     font-size: 30px;

@@ -79,8 +79,8 @@ class TitleLayout extends React.Component {
                         src={this.state.puppyUrl} />
                 </div>
                 <div class="clearfix buttons">
-                    <span class="gameButton left" onClick={this.nextPuppy.bind(this)}>Not Cute Enough</span>
-                    <span class="gameButton right" style={{color:'greenyellow'}} onClick={this.onStartGame.bind(this)}>Play!</span>
+                    <div class="gameButton left" onClick={this.nextPuppy.bind(this)}>Not Cute Enough</div>
+                    <div class="gameButton right" style={{color:'greenyellow'}} onClick={this.onStartGame.bind(this)}>Play!</div>
                 </div>
             </div>);
     }
