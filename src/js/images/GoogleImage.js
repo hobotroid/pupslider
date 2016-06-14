@@ -1,25 +1,23 @@
-var giSearch = require('google-image-search');
+// Simple little interface for grabbing a random page from google image search
+var GoogleImage = {
+    /**
+     * get()
+     * Gets a semi-random page of images from Google Image search
+     * returns a Promise representing the completed search
+     */
+    get: function (searchTerm) {
+        const googleImages = require('google-images');
 
-export default class GoogleImage {
+        let client = googleImages(
+            '010972739567059593472:4vdlxaechz8',        // My Google CSE Key
+            'AIzaSyDxC6zwHg8YAQLUgnL29RK0U84WU7o223g'   // My Google API Key
+        );
 
-    constructor() {
-
+        return client.search(searchTerm, {
+            size: 'large',
+            page: Math.floor(Math.random() * 100)
+        });
     }
+};
 
-    get(searchTerm, numImages) {
-        console.log('getting ' + searchTerm);
-        giSearch(searchTerm);
-
-
-
-    }
-
-    /*
-    var fetchJSON = function(url) {
-      return new Promise((resolve, reject) => {
-        $.getJSON(url)
-          .done((json) => resolve(json))
-          .fail((xhr, status, err) => reject(status + err.message));
-      });
-  }*/
-}
+module.exports = GoogleImage;

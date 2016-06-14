@@ -1,69 +1,44 @@
 import React from "react";
 
-import Board from "./../board/Board";
-import BoardLayout from "./BoardLayout";
-import GoogleImage from "./../images/GoogleImage.js";
+import GameLayout from "./GameLayout";
+import TitleLayout from "./TitleLayout";
 
 export default class App extends React.Component {
     constructor() {
         super();
-
         this.state = {
-            board: new Board(5, 5, 100, 100) // TODO: un-hardcode these widths and heights
-        };
-
-        this.handleMouseClick = this.tileClicked.bind(this);
-
-        //get images - temp
-        let googleImage = new GoogleImage();
-        googleImage.get("puppy", 5);
+            stage: "title"
+        }
     }
 
-    tileClicked(tileIndex) {
-        console.log(`clicked ${tileIndex}`);
-        console.log(this.state.board.tiles);
-        this.state.board.move(tileIndex);
+    restart() {
+
+    }
+
+    startGame(puppyUrl) {
         this.setState({
-            board: this.state.board
+            puppyUrl: puppyUrl,
+            stage: "game"
         });
-        console.log(this.state.board.tiles);
+    }
+
+    endGame() {
+        this.setState({
+            stage: "title"
+        });
     }
 
     render() {
-        return (
-            <div>
-                <BoardLayout
-                    board={this.state.board}
-                    onMouseClick={this.handleMouseClick} />
-            </div>
-        );
+        if(this.state.stage == "title") {           // Title screen
+            return <TitleLayout
+                startGame={this.startGame.bind(this)} />;
+        } else if (this.state.stage == "game") {    // Game screen
+            return <GameLayout
+                endGame={this.endGame}
+                puppyUrl={this.state.puppyUrl} />;
+        } else {                                    // Game Over screen
+            return <GameLayout />;
+        }
+
     }
 }
-
-
-/*
-import Footer from "./Footer";
-import Header from "./Header";
-
-export default class Layout extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      title: "Welcome",
-    };
-  }
-
-  changeTitle(title) {
-    this.setState({title});
-  }
-
-  render() {
-    return (
-      <div>
-        <Header changeTitle={this.changeTitle.bind(this)} title={this.state.title} />
-        <Footer />
-      </div>
-    );
-  }
-}
-*/

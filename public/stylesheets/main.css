@@ -1,5 +1,34 @@
+body {
+    width: 100%;
+    text-align: center;
+    padding-top: 100px;
+}
+
+#gameScreen #currentPuppy {
+    margin: 20px auto;
+    width: 520px;
+    height: 520px;
+    background: url(../walk.gif) no-repeat center center;
+    background-size: 200px 199px;
+}
+#gameScreen #currentPuppy img {
+    width: 521px;
+    display: none;
+    cursor: pointer;
+}
+#gameScreen #buttons {
+    display: none;
+}
+
+#gameBoard {
+    margin: 20px auto;
+    width: 521px;
+    position: relative;
+}
+
 .emptyTile {
     background-color: white;
+    background-image: none !important;
 }
 .normalTile {
     background-color: violet;
