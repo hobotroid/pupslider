@@ -3,38 +3,23 @@ import { Motion, spring } from 'react-motion';
 
 import Board from "./../board/Board";
 
-const springConfig = {stiffness: 300, damping: 50};
-
+/**
+ * BoardLayout Component
+ * Handles the layout of the actual tiles.
+ */
 class BoardLayout extends React.Component {
-    handleTouchStart(key, pressLocation, e) {
-        this.handleMouseDown(key, pressLocation, e.touches[0]);
-    }
-
-    handleMouseDown(pos, pressY, {pageY}) {
-/*
-        this.setState({
-            delta: pageY - pressY,
-            mouse: pressY,
-            isPressed: true,
-            lastPressed: pos
-        });
-        */
-    }
-
     render() {
         let board = this.props.board;
         return (<div id="gameBoard">
             {board.tiles.map((tileValue, tileIndex) => {
                 let { x, y } = board.getTilePosition(tileIndex);
-                let originalPos = board.getTilePosition(tileValue);
+                let originalPos = board.getTilePosition(tileValue - 1);
                 const className = "tile " + (tileValue == 0 ? "emptyTile" : "normalTile");
                 const style = {
-                    //scale: spring(1, springConfig),
-                    //shadow: spring(1, springConfig),
-                    //y: spring(tileIndex * 100, springConfig),
                     tX: spring(x),
                     tY: spring(y)
                 };
+
                 return (
                     <Motion key={tileIndex} defaultStyle={{x: 0}} style={style}>
                         {(value) =>
@@ -49,6 +34,7 @@ class BoardLayout extends React.Component {
                                     backgroundPosition: `-${originalPos.x}px -${originalPos.y}px`
                                 }}
                                 onClick={this.props.onMouseClick.bind(null, tileIndex)}>
+                                <span className="tileValue">{tileValue}</span>
                             </div>
                         }
                     </Motion>

@@ -11,9 +11,17 @@ body {
 }
 
 .tile {
-    color: red;
+    color: white;
     position: absolute;
     text-align: center;
+    text-align: left;
+    padding: 5px;
+    font-family: folioBold;
+    font-size: 22px;
+    text-shadow: 2px 2px #5F4B1B;
+}
+.emptyTile span.tileValue {
+    display: none !important;
 }
 
 .gameButton {

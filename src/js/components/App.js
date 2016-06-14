@@ -3,6 +3,10 @@ import React from "react";
 import GameLayout from "./GameLayout";
 import TitleLayout from "./TitleLayout";
 
+/**
+ * App Component
+ * Renders either the title or the game screen.
+ */
 export default class App extends React.Component {
     constructor() {
         super();
@@ -38,9 +42,6 @@ export default class App extends React.Component {
             return <GameLayout
                 endGame={this.endGame.bind(this)}
                 puppyUrl={this.state.puppyUrl} />;
-        } else {                                    // Game Over screen
-            return <GameLayout />;
         }
-
     }
 }

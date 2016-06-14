@@ -1,5 +1,13 @@
 import React from 'react';
 
+/**
+ * TitleLayout Component
+ * Lets the user browse through puppy images until they come upon one that's
+ * sufficiently cute.
+ *
+ * These images come from a simple API, which in turn grabs them from a
+ * Google Custom Search Engine API.
+ */
 class TitleLayout extends React.Component {
 
     constructor() {

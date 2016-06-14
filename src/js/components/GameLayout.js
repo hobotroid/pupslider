@@ -3,6 +3,11 @@ import React from "react";
 import Board from "./../board/Board";
 import BoardLayout from "./BoardLayout";
 
+/**
+ * GameLayout Component
+ * Handles the display logic for the game -- houses the game board and score
+ * board as well.
+ */
 export default class GameLayout extends React.Component {
     constructor() {
         super();
@@ -144,9 +149,7 @@ export default class GameLayout extends React.Component {
                     onMouseClick={this.handleMouseClick}
                     puppyUrl={this.props.puppyUrl} />
 
-                <ul id="scoreBoard">
-                    <li>blah</li>
-                </ul>
+                <ul id="scoreBoard"></ul>
 
                 <div class="clearfix buttons gameInfo">
                     <div style={{float:'left'}}>PUPSLIDES: <span class="gameMoves">{moveCount}</span></div>

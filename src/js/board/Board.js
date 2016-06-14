@@ -49,16 +49,36 @@ export default class Board {
      * return bool whether move happened
      */
     move(tileIndex) {
-        const clickedTile = this.getTilePosition(tileIndex);
         const emptyTile = this.getEmptyTile();
-        console.log(`moving ${clickedTile.x}x${clickedTile.y}`);
 
-        if((emptyTile.x == clickedTile.x || emptyTile.y == clickedTile.y) && (clickedTile.x != emptyTile.x || clickedTile.y != emptyTile.y)) {
+        if(this.neighbors(tileIndex, emptyTile.index)) {
             this.swap(tileIndex, emptyTile.index)
             return true;
         }
 
         return false;
+    }
+
+    /**
+     * Figure out if two given tiles are adjacent
+     */
+    neighbors(index1, index2) {
+        const tile1 = this.getTilePosition(index1);
+        const tile2 = this.getTilePosition(index2);
+
+        const tile1pos = {x: tile1.x / this.tileWidth, y: tile1.y / this.tileHeight};
+        const tile2pos = {x: tile2.x / this.tileWidth, y: tile2.y / this.tileHeight};
+
+        if((tile1pos.x == tile2pos.x && Math.abs(tile2pos.y - tile1pos.y) == 1) ||
+            (tile1pos.y == tile2pos.y && Math.abs(tile2pos.x - tile1pos.x) == 1) ) {
+            return true;
+        }
+
+        return false;
+        if((emptyTile.x == clickedTile.x || emptyTile.y == clickedTile.y) && (clickedTile.x != emptyTile.x || clickedTile.y != emptyTile.y)
+            && (Math.abs(emptyTile.x - clickedTile.x) == 1 || Math.abs(emptyTile.y - clickedTile.y) == 1)) {
+
+        }
     }
 
     /**
