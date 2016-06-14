@@ -5,7 +5,8 @@ as the sun and the moon are facts.
 
 Pupslider presents you with a selection of puppy images from Google Images, and leaves
 it in your hands as to which puppy you'll be reconstructing during the game
-session.
+session. Basic high scores are also provided--one list based on time, and one based on
+move count.
 
 # Technical stuff
 This is a pretty straightforward React app with only a few dependencies. I've
