@@ -70,7 +70,7 @@ class TitleLayout extends React.Component {
     render() {
         return (
             <div id="gameScreen" class="titleScreen">
-                <img id="titleImage" src="title.png" />
+                <img id="titleImage" src="title2.png" />
                 <div id="currentPuppy">
                     <img id="currentPuppyImage"
                         onClick={this.nextPuppy.bind(this)}
