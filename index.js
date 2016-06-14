@@ -39,7 +39,8 @@ router.route('/pups')
         res.header('Expires', '-1');
         res.header('Pragma', 'no-cache');
 
-        //If our google search times out for whatever reason, use a static list
+        // If our google search times out/fails for whatever reason, use a 
+        // static list
         res.setTimeout(5000, function(){
             var shuffle = require('shuffle-array');
             var cachedPuppiesJson = JSON.parse(fs.readFileSync('staticpups.json', 'utf8'));
