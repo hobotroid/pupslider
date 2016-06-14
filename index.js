@@ -58,7 +58,6 @@ router.route('/pups')
             res.end();
         });
 
-/* UNCOMMENT ME
         let searchPromise = GoogleImage.get("cute puppy");
         searchPromise.then(function (images) {
             console.log("Using Google results!");
@@ -66,11 +65,8 @@ router.route('/pups')
                 return image.url;
             });
             res.json({ message: urls });
-        });*/
+        });
     });
-/*    .post(function(req, res) {
-        res.json({ message: 'pups POST' });
-    });*/
 
 /**
  * Scores GET and POST

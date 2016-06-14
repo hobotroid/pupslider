@@ -49,7 +49,7 @@ export default class GameLayout extends React.Component {
             this.setState({
                 board: this.state.board,
                 moveCount: this.state.moveCount + 1,
-                won: true || this.state.board.isSolved()
+                won: this.state.board.isSolved()
             });
         }
     }
