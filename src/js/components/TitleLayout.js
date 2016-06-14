@@ -1,12 +1,12 @@
 import React from 'react';
-// http://3.bp.blogspot.com/-vEKP0OXLdvY/T-gHborF3QI/AAAAAAAJEFA/2TvHvGYLlH8/s1600/Cute Puppies (13).jpg
 
 class TitleLayout extends React.Component {
 
     constructor() {
         super();
 
-        this.apiUrl = "http://127.0.0.1:5000/api";
+        // API lives in same process as web server for the purposes of this demo
+        this.apiUrl = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '')+"/api";
 
         this.state = {
             puppyIndex: -1
