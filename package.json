@@ -23,6 +23,7 @@
     "babel-preset-react": "^6.3.13",
     "babel-preset-stage-0": "^6.3.13",
     "body-parser": "~1.0.1",
+    "google-images": "1.0.0",
     "jimp": "0.2.24",
     "lodash.range": "^3.0.1",
     "mongoose": "~3.6.13",
